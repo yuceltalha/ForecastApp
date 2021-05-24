@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/userModel.dart';
 import 'package:untitled1/utis/dbhelper.dart';
-import 'validator.dart';
+
+import 'islemMenusu.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,10 +11,10 @@ class LoginScreen extends StatefulWidget {
   }
 }
 
-class _LoginScreenState extends State{
+class _LoginScreenState extends State {
   var users = Users();
   var formKey = GlobalKey<FormState>();
-
+  var userList = List<Users>();
 
   DatabaseHelper dbhelper = DatabaseHelper();
   @override
@@ -25,9 +26,10 @@ class _LoginScreenState extends State{
   Future<void> fetchh() async {
     var temp = await getListOfUsers();
     setState(() {
-      listee = temp;
+      userList = temp;
     });
   }
+
   Future<List<Users>> getListOfUsers() async {
     var userList = await dbhelper.getUsersList();
     var users = userList;
@@ -40,46 +42,51 @@ class _LoginScreenState extends State{
     var currentUsers = await dbhelper.getUsersList();
     return currentUsers;
   }
+
   bool idStatus = false;
   bool passStatus = false;
 
-  String validateUserName(String value){
-    List<Users> defUsers = getUsers();
-    for(int i = 0;i<defUsers.length;i++){
-      if (value == defUsers[i].userName) {
+  String validateUserName(String value) {
+    for (int i = 0; i < userList.length; i++) {
+      if (value == userList[i].userName) {
         idStatus = true;
       }
     }
-    if(idStatus){
+    if (!idStatus) {
       return "Kullanıcı Adınız Yanlış, Lütfen Tekrar Deneyin";
     }
   }
-  String validatePassword(String value){
-    List<Users> defUsers = getUsers();
-    for(int i = 0;i<defUsers.length;i++){
-      if (value == defUsers[i].userName) {
-        idStatus = true;
+
+  String validatePassword(String value) {
+    for (int i = 0; i < userList.length; i++) {
+      if (value == userList[i].userPassword) {
+        passStatus = true;
       }
     }
-    if(passStatus){
+    if (!passStatus) {
       return "Şifreniz Yanlış, Lütfen Tekrar Deneyin";
     }
   }
-  String validateGrade(String value){
-    var grade = int.parse(value);
-    if ( grade < 0 || grade > 100 ){
-      return "Not 0 ile 100 arasında olmalıdır";
+
+  validateAdminStatus() {
+    for (int i = 0; i < userList.length; i++) {
+      if (userList[i].userPassword == users.userPassword &&
+          userList[i].userName == users.userName) {
+        users.userAdminStatus = userList[i].userAdminStatus;
+      }
     }
-
+    if (users.userAdminStatus == 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Yeni Öğrenci Ekle"),
+        title: Text("Giriş Sayfası"),
       ),
       body: Container(
         margin: EdgeInsets.all(20.0),
@@ -126,7 +133,11 @@ class _LoginScreenState extends State{
       child: Text("Giriş Yap"),
       onPressed: () {
         if (formKey.currentState.validate()) {
-          Navigator.pop(context);
+          validateAdminStatus();
+          print("islembasarili");
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => Islemler(users)),
+              (Route<dynamic> route) => true);
         }
       },
     );

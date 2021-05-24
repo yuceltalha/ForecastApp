@@ -40,14 +40,13 @@ class DatabaseHelper {
     if (!exists) {
       // Should happen only the first time you launch your application
       // print("Creating new copy from asset");
-
       // Make sure the parent directory exists
       try {
         await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
 
       // Copy from asset
-      ByteData data = await rootBundle.load(join("assets", "dosyadi.db"));
+      ByteData data = await rootBundle.load(join("assets", "usersDB.db"));
       List<int> bytes =
       data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
