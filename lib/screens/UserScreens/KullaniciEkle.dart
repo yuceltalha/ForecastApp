@@ -5,13 +5,9 @@ import 'package:untitled1/utis/dbhelper.dart';
 import 'kullaniciDuzenle.dart';
 
 class KullaniciEkle extends StatefulWidget {
-  var user = Users();
-  KullaniciEkle(user) {
-    this.user;
-  }
   @override
   State<StatefulWidget> createState() {
-    return _KullaniciEkleState(user);
+    return _KullaniciEkleState();
   }
 }
 
@@ -20,9 +16,6 @@ class _KullaniciEkleState extends State {
   var userList = List<Users>();
   DatabaseHelper dbhelper = DatabaseHelper();
   var user = Users();
-  _KullaniciEkleState(user) {
-    this.user;
-  }
   @override
   void initState() {
     fetchh();
@@ -77,6 +70,7 @@ class _KullaniciEkleState extends State {
             children: <Widget>[
               buildLocNameFeild(),
               buildLocApiFeild(),
+              buildUserAuthFeild(),
               buildSubmitButton(),
             ],
           ),
@@ -112,8 +106,7 @@ class _KullaniciEkleState extends State {
     return Row(
       children: [
         Text(
-          "Tanrı Kullanıcı = ",
-          style: TextStyle(backgroundColor: Colors.redAccent.shade50),
+          "Tanrı Kullanıcı = "
         ),
         Switch(
           value: isSwitched,
@@ -134,6 +127,7 @@ class _KullaniciEkleState extends State {
       child: Text("Lokasyon Ekle"),
       onPressed: () {
         if (formKey.currentState.validate()) {
+          formKey.currentState.save();
           user.id = null;
           if (isSwitched) {
             user.userAdminStatus = 1;

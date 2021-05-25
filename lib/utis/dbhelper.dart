@@ -102,7 +102,7 @@ class DatabaseHelper {
     return result2;
   }
   Future<List<Locations>> getLocationsList() async {
-    var dbLocations = await getUsers();
+    var dbLocations = await getLocations();
     var L = List<Locations>();
     for (Map map in dbLocations) {
       L.add(Locations.fromJson(map));

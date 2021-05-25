@@ -38,34 +38,18 @@ class _LoginScreenState extends State {
     }
   }
 
-  getUsers() async {
-    var currentUsers = await dbhelper.getUsersList();
-    return currentUsers;
-  }
-
-  bool idStatus = false;
-  bool passStatus = false;
-
   String validateUserName(String value) {
-    for (int i = 0; i < userList.length; i++) {
-      if (value == userList[i].userName) {
-        idStatus = true;
-      }
-    }
-    if (!idStatus) {
+    if (!(userList.any((e) => e.userName !=value))) {
       return "Kullanıcı Adınız Yanlış, Lütfen Tekrar Deneyin";
     }
+    return null;
   }
 
   String validatePassword(String value) {
-    for (int i = 0; i < userList.length; i++) {
-      if (value == userList[i].userPassword) {
-        passStatus = true;
-      }
-    }
-    if (!passStatus) {
+    if (!(userList.any((e) => e.userPassword !=value))) {
       return "Şifreniz Yanlış, Lütfen Tekrar Deneyin";
     }
+    return null;
   }
 
   validateAdminStatus() {
@@ -75,17 +59,13 @@ class _LoginScreenState extends State {
         users.userAdminStatus = userList[i].userAdminStatus;
       }
     }
-    if (users.userAdminStatus == 1) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("Giriş Sayfası"),
       ),
       body: Container(
@@ -133,6 +113,7 @@ class _LoginScreenState extends State {
       child: Text("Giriş Yap"),
       onPressed: () {
         if (formKey.currentState.validate()) {
+          formKey.currentState.save();
           validateAdminStatus();
           print("islembasarili");
           Navigator.of(context).pushAndRemoveUntil(

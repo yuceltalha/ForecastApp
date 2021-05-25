@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/userModel.dart';
 import 'package:untitled1/screens/LocationScreens/lokasyonDuzenle.dart';
+import 'package:untitled1/screens/UserScreens/kullaniciDuzenle.dart';
+import 'package:untitled1/screens/havaDurumu.dart';
 
 class Islemler extends StatefulWidget {
   var user = Users();
@@ -53,7 +55,7 @@ class _IslemlerState extends State {
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
+                MaterialPageRoute(builder: (context) => KullaniciDuzenle()),
                     (Route<dynamic> route) => true);
           },
           title: Text("Kullanıcı Düzenle"),
@@ -66,7 +68,7 @@ class _IslemlerState extends State {
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
+                MaterialPageRoute(builder: (context) => HavaDurumuSorgu()),
                     (Route<dynamic> route) => true);
           },
           title: Text("Hava Durumu"),
@@ -85,22 +87,25 @@ class _IslemlerState extends State {
       ),
 
     ];
-    if(user.userAdminStatus == 1){
-      return ListView(
-        children: [
-          defaultCards[0],
-          adminCards[0],
-          defaultCards[1],
-          adminCards[1],
-        ],
+    if(true){
+      return Expanded(
+        child: ListView(
+          children: [
+            defaultCards[0],
+            adminCards[0],
+            adminCards[1],
+          ],
+        ),
       );
     }
     else{
-      return ListView(
-        children: [
-          defaultCards[0],
-          defaultCards[1],
-        ],
+      print(user.userAdminStatus);
+      return Expanded(
+        child: ListView(
+          children: [
+            defaultCards[0],
+          ],
+        ),
       );
     }
   }

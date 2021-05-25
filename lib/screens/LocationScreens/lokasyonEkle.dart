@@ -94,7 +94,8 @@ class _LokasyonEkleState extends State {
       decoration:
           InputDecoration(labelText: " Api Kodu", hintText: "IARNAVUT2"),
       onSaved: (String value) {
-        location.locationApiName = value;
+        location.locationApiName = "";
+        location.locationApiName =value;
       },
     );
   }
@@ -104,13 +105,14 @@ class _LokasyonEkleState extends State {
       child: Text("Lokasyon Ekle"),
       onPressed: () {
         if (formKey.currentState.validate()) {
+          formKey.currentState.save();
           location.id = null;
           location.userId = 1;
-          dbhelper.insertLocation(location);
-          print("islembasarili");
+          var res = dbhelper.insertLocation(location);
+          print("islembasarili" + res.toString());
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
-              (Route<dynamic> route) => true);
+              (Route<dynamic> route) => false);
         }
       },
     );
