@@ -11,20 +11,18 @@ class LokasyonDuzenle extends StatefulWidget {
   }
 }
 
-class _LokasyonDuzenleState extends State{
-
+class _LokasyonDuzenleState extends State {
   DatabaseHelper dbhelper = DatabaseHelper();
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () {
           //lokasyon ekle
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => LokasyonEkle()),
-                  (Route<dynamic> route) => true);
+              (Route<dynamic> route) => true);
         },
         child: Icon(Icons.add),
       ),
@@ -34,7 +32,6 @@ class _LokasyonDuzenleState extends State{
       body: locationBuilder(),
     );
   }
-
 
   locationBuilder() {
     return Column(
@@ -49,33 +46,37 @@ class _LokasyonDuzenleState extends State{
               } else if (snapshot.hasData) {
                 return Expanded(
                   child: ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int position) {
-                          return Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              color: Colors.deepPurple.shade200,
-                              elevation: 2.4,
-                              child: ListTile(
-                                title: Text(snapshot.data[position].locationName.toString() + " Lokasyonu" + snapshot.data[position].locationApiName),
-                                onTap: () {
-                                  setState(() {
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(builder: (context) => LokasyonGuncelle(snapshot.data[position])),
-                                            (Route<dynamic> route) => true);
-                                  });
-                                },
-                              ),
-                            );
-                        }),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int position) {
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.deepPurple.shade200,
+                          elevation: 2.4,
+                          child: ListTile(
+                            title: Text(snapshot.data[position].locationName
+                                    .toString() +
+                                " Lokasyonu"),
+                            onTap: () {
+                              setState(() {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => LokasyonGuncelle(
+                                            snapshot.data[position])),
+                                    (Route<dynamic> route) => true);
+                              });
+                            },
+                          ),
+                        );
+                      }),
                 );
               } else if (!snapshot.hasData) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return Text("else girdi");
+                return Center(child: Text("Veri Yok"));
               }
             }),
       ],

@@ -12,18 +12,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State {
-  var users = Users();
+  var user = Users();
   var formKey = GlobalKey<FormState>();
   var userList = List<Users>();
 
   DatabaseHelper dbhelper = DatabaseHelper();
   @override
   void initState() {
-    fetchh();
+    fetch();
     super.initState();
   }
 
-  Future<void> fetchh() async {
+  Future<void> fetch() async {
     var temp = await getListOfUsers();
     setState(() {
       userList = temp;
@@ -32,31 +32,31 @@ class _LoginScreenState extends State {
 
   Future<List<Users>> getListOfUsers() async {
     var userList = await dbhelper.getUsersList();
-    var users = userList;
-    if (users != null) {
-      return users;
+    var usersL = userList;
+    if (usersL != null) {
+      return usersL;
     }
   }
 
   String validateUserName(String value) {
-    if (!(userList.any((e) => e.userName !=value))) {
+    if (!(userList.any((e) => e.userName == value))) {
+      print(userList.length.toString() + "şierlhmişerlhmeşrhlmerşhlmş");
       return "Kullanıcı Adınız Yanlış, Lütfen Tekrar Deneyin";
     }
-    return null;
   }
 
   String validatePassword(String value) {
-    if (!(userList.any((e) => e.userPassword !=value))) {
+    if (!(userList.any((e) => e.userPassword == value))) {
       return "Şifreniz Yanlış, Lütfen Tekrar Deneyin";
     }
-    return null;
   }
 
   validateAdminStatus() {
     for (int i = 0; i < userList.length; i++) {
-      if (userList[i].userPassword == users.userPassword &&
-          userList[i].userName == users.userName) {
-        users.userAdminStatus = userList[i].userAdminStatus;
+      if ((userList[i].userPassword == user.userPassword) &&
+          (userList[i].userName == user.userName)) {
+        user.userAdminStatus = userList[i].userAdminStatus;
+        user.id = userList[i].id;
       }
     }
   }
@@ -73,7 +73,7 @@ class _LoginScreenState extends State {
         child: Form(
           key: formKey,
           child: Column(
-            children: <Widget>[
+            children: [
               buildUserNameFeild(),
               buildPasswordFeild(),
               buildSubmitButton(),
@@ -86,24 +86,24 @@ class _LoginScreenState extends State {
 
   Widget buildUserNameFeild() {
     return TextFormField(
-      initialValue: users.userName,
+      initialValue: user.userName,
       decoration:
           InputDecoration(labelText: "Kullanıcı Adı", hintText: "admin"),
       validator: validateUserName,
       onSaved: (String value) {
-        users.userName = value;
+        user.userName = value;
       },
     );
   }
 
   Widget buildPasswordFeild() {
     return TextFormField(
-      initialValue: users.userPassword,
+      initialValue: user.userPassword,
       decoration:
           InputDecoration(labelText: "Kullanıcı Şifresi", hintText: "root"),
       validator: validatePassword,
       onSaved: (String value) {
-        users.userPassword = value;
+        user.userPassword = value;
       },
     );
   }
@@ -117,8 +117,8 @@ class _LoginScreenState extends State {
           validateAdminStatus();
           print("islembasarili");
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => Islemler(users)),
-              (Route<dynamic> route) => true);
+              MaterialPageRoute(builder: (context) => Islemler(user)),
+              (Route<dynamic> route) => false);
         }
       },
     );

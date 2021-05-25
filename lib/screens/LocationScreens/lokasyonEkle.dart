@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/locationsModel.dart';
+import 'package:untitled1/models/userModel.dart';
 import 'package:untitled1/screens/LocationScreens/lokasyonDuzenle.dart';
+import 'package:untitled1/screens/islemMenusu.dart';
 import 'package:untitled1/utis/dbhelper.dart';
 
 class LokasyonEkle extends StatefulWidget {
@@ -12,47 +14,9 @@ class LokasyonEkle extends StatefulWidget {
 
 class _LokasyonEkleState extends State {
   var formKey = GlobalKey<FormState>();
-  var LocList = List<Locations>();
   var location = Locations();
   DatabaseHelper dbhelper = DatabaseHelper();
-  @override
-  void initState() {
-    fetchh();
-    super.initState();
-  }
 
-  Future<void> fetchh() async {
-    var temp = await getListOfLocations();
-    setState(() {
-      LocList = temp;
-    });
-  }
-
-  Future<List<Locations>> getListOfLocations() async {
-    var userList = await dbhelper.getLocationsList();
-    var locs = LocList;
-    if (locs != null) {
-      return locs;
-    }
-  }
-
-  getUsers() async {
-    var currentUsers = await dbhelper.getUsersList();
-    return currentUsers;
-  }
-
-  //silinecek
-  String validateLoc(String value) {
-    if (value.length < 2) {
-      return "Lokasyon Adı 2 harften uzun olmalı";
-    }
-  }
-
-  String validateApi(String value) {
-    if (value.length < 2) {
-      return "Api Adı 2 harften uzun olmalı";
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +30,7 @@ class _LokasyonEkleState extends State {
         child: Form(
           key: formKey,
           child: Column(
-            children: <Widget>[
+            children: [
               buildLocNameFeild(),
               buildLocApiFeild(),
               buildSubmitButton(),
@@ -92,9 +56,8 @@ class _LokasyonEkleState extends State {
     return TextFormField(
       initialValue: location.locationApiName,
       decoration:
-          InputDecoration(labelText: " Api Kodu", hintText: "IARNAVUT2"),
+          InputDecoration(labelText: " Yanlızca Lokasyon Kodunu Giriniz", hintText: "IARNAVUT2"),
       onSaved: (String value) {
-        location.locationApiName = "";
         location.locationApiName =value;
       },
     );
@@ -108,11 +71,15 @@ class _LokasyonEkleState extends State {
           formKey.currentState.save();
           location.id = null;
           location.userId = 1;
-          var res = dbhelper.insertLocation(location);
-          print("islembasarili" + res.toString());
+          dbhelper.insertLocation(location);
+          var user = Users();
+          user.userAdminStatus =1;
+          user.id = 1;
+          user.userPassword = "root";
+          user.userName ="admin";
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
-              (Route<dynamic> route) => false);
+              MaterialPageRoute(builder: (context) => Islemler(user)),
+              (Route<dynamic> route) => true);
         }
       },
     );

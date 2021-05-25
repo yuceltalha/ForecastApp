@@ -37,24 +37,6 @@ class _KullaniciEkleState extends State {
     }
   }
 
-  getUsers() async {
-    var currentUsers = await dbhelper.getUsersList();
-    return currentUsers;
-  }
-
-  //silinecek
-  String validateLoc(String value) {
-    if (value.length < 2) {
-      return " Adı 2 harften uzun olmalı";
-    }
-  }
-
-  String validateApi(String value) {
-    if (value.length < 2) {
-      return "Api Adı 2 harften uzun olmalı";
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,7 +120,7 @@ class _KullaniciEkleState extends State {
           print("islembasarili");
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => KullaniciDuzenle()),
-              (Route<dynamic> route) => true);
+              (Route<dynamic> route) => false);
         }
       },
     );

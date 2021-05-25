@@ -3,11 +3,12 @@ import 'package:untitled1/models/userModel.dart';
 import 'package:untitled1/screens/LocationScreens/lokasyonDuzenle.dart';
 import 'package:untitled1/screens/UserScreens/kullaniciDuzenle.dart';
 import 'package:untitled1/screens/havaDurumu.dart';
+import 'package:untitled1/screens/userLogScreen.dart';
 
 class Islemler extends StatefulWidget {
   var user = Users();
-  Islemler(user){
-    this.user;
+  Islemler(user) {
+    this.user = user;
   }
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +18,9 @@ class Islemler extends StatefulWidget {
 
 class _IslemlerState extends State {
   var user = Users();
-  _IslemlerState(caller){this.user;}
+  _IslemlerState(user) {
+    this.user = user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +33,8 @@ class _IslemlerState extends State {
       body: Container(
         child: Column(
           children: [
-           menuItems(),
-            ],
+            menuItems(),
+          ],
         ),
       ),
     );
@@ -45,9 +48,35 @@ class _IslemlerState extends State {
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
-                    (Route<dynamic> route) => true);
+                (Route<dynamic> route) => true);
           },
           title: Text("Lokasyon Düzenle"),
+        ),
+      ),
+
+      Card(
+        color: Colors.redAccent.shade200,
+        child: ListTile(
+          onTap: () {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => KullaniciDuzenle()),
+                (Route<dynamic> route) => true);
+          },
+          title: Text("Kullanıcı Düzenle"),
+        ),
+      ),
+    ];
+
+    var defaultCards = [
+      Card(
+        color: Colors.redAccent.shade200,
+        child: ListTile(
+          onTap: () {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HavaDurumuSorgu(user)),
+                (Route<dynamic> route) => true);
+          },
+          title: Text("Hava Durumu"),
         ),
       ),
       Card(
@@ -55,55 +84,32 @@ class _IslemlerState extends State {
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => KullaniciDuzenle()),
+                MaterialPageRoute(builder: (context) => ULogScreen()),
                     (Route<dynamic> route) => true);
           },
-          title: Text("Kullanıcı Düzenle"),
+          title: Text("Raporlar(Kullanıcı Logları)"),
         ),
-      ),
+      )
     ];
-    var defaultCards = [
-      Card(
-        color: Colors.redAccent.shade200,
-        child: ListTile(
-          onTap: () {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => HavaDurumuSorgu()),
-                    (Route<dynamic> route) => true);
-          },
-          title: Text("Hava Durumu"),
-        ),
-      ),
-      Card(
-        color: Colors.redAccent.shade200,
-        child: ListTile(
-          onTap: () {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) =>LokasyonDuzenle()),
-                    (Route<dynamic> route) => true);
-          },
-          title: Text("Raporlar"),
-        ),
-      ),
 
-    ];
-    if(true){
+    if (user.userAdminStatus == 1) {
       return Expanded(
         child: ListView(
           children: [
             defaultCards[0],
             adminCards[0],
             adminCards[1],
+            defaultCards[1],
           ],
         ),
       );
-    }
-    else{
+    } else {
       print(user.userAdminStatus);
       return Expanded(
         child: ListView(
           children: [
             defaultCards[0],
+            defaultCards[1],
           ],
         ),
       );

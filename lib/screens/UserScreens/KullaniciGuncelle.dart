@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/userModel.dart';
 import 'package:untitled1/screens/LocationScreens/lokasyonDuzenle.dart';
+import 'package:untitled1/screens/islemMenusu.dart';
 import 'package:untitled1/utis/dbhelper.dart';
 
 class KullaniciGuncelle extends StatefulWidget {
   var user = Users();
   KullaniciGuncelle(user) {
-    this.user;
+    this.user = user;
   }
   @override
   State<StatefulWidget> createState() {
@@ -16,49 +17,10 @@ class KullaniciGuncelle extends StatefulWidget {
 
 class _KullaniciGuncelleState extends State {
   var formKey = GlobalKey<FormState>();
-  var userList = List<Users>();
   DatabaseHelper dbhelper = DatabaseHelper();
   var user = Users();
   _KullaniciGuncelleState(user) {
-    this.user;
-  }
-  @override
-  void initState() {
-    fetchh();
-    super.initState();
-  }
-
-  Future<void> fetchh() async {
-    var temp = await getListOfUsers();
-    setState(() {
-      userList = temp;
-    });
-  }
-
-  Future<List<Users>> getListOfUsers() async {
-    var userList = await dbhelper.getUsersList();
-    var users = userList;
-    if (users != null) {
-      return users;
-    }
-  }
-
-  getUsers() async {
-    var currentUsers = await dbhelper.getUsersList();
-    return currentUsers;
-  }
-
-  //silinecek
-  String validateLoc(String value) {
-    if (value.length < 2) {
-      return "Lokasyon Adı 2 harften uzun olmalı";
-    }
-  }
-
-  String validateApi(String value) {
-    if (value.length < 2) {
-      return "Api Adı 2 harften uzun olmalı";
-    }
+    this.user = user;
   }
 
   @override
@@ -108,14 +70,15 @@ class _KullaniciGuncelleState extends State {
 
   Widget buildSubmitButton() {
     return RaisedButton(
-      child: Text("Lokasyon Ekle"),
+      child: Text("Kullanıcı Ekle"),
       onPressed: () {
         if (formKey.currentState.validate()) {
+          formKey.currentState.save();
           dbhelper.updateU(user);
           print("islembasarili");
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
-                  (Route<dynamic> route) => true);
+              MaterialPageRoute(builder: (context) => Islemler(user)),
+                  (Route<dynamic> route) => false);
         }
       },
     );

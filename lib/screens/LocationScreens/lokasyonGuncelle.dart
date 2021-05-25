@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/locationsModel.dart';
-import 'package:untitled1/screens/LocationScreens/lokasyonDuzenle.dart';
 import 'package:untitled1/utis/dbhelper.dart';
 
 class LokasyonGuncelle extends StatefulWidget {
   var location = Locations();
   LokasyonGuncelle(location) {
-    this.location;
+    this.location = location;
   }
   @override
   State<StatefulWidget> createState() {
@@ -16,49 +15,10 @@ class LokasyonGuncelle extends StatefulWidget {
 
 class _LokasyonGuncelleState extends State {
   var formKey = GlobalKey<FormState>();
-  var LocList = List<Locations>();
   DatabaseHelper dbhelper = DatabaseHelper();
   var location = Locations();
-  _LokasyonGuncelleState(lokasyon) {
-    this.location;
-  }
-  @override
-  void initState() {
-    fetchh();
-    super.initState();
-  }
-
-  Future<void> fetchh() async {
-    var temp = await getListOfLocations();
-    setState(() {
-      LocList = temp;
-    });
-  }
-
-  Future<List<Locations>> getListOfLocations() async {
-    var userList = await dbhelper.getLocationsList();
-    var locs = LocList;
-    if (locs != null) {
-      return locs;
-    }
-  }
-
-  getUsers() async {
-    var currentUsers = await dbhelper.getUsersList();
-    return currentUsers;
-  }
-
-  //silinecek
-  String validateLoc(String value) {
-    if (value.length < 2) {
-      return "Lokasyon Adı 2 harften uzun olmalı";
-    }
-  }
-
-  String validateApi(String value) {
-    if (value.length < 2) {
-      return "Api Adı 2 harften uzun olmalı";
-    }
+  _LokasyonGuncelleState(location) {
+    this.location = location;
   }
 
   @override
@@ -98,8 +58,9 @@ class _LokasyonGuncelleState extends State {
   Widget buildLocApiFeild() {
     return TextFormField(
       initialValue: location.locationApiName,
-      decoration:
-          InputDecoration(labelText: " Api Kodu", hintText: "IARNAVUT2"),
+      decoration: InputDecoration(
+          labelText: " Yanlızca Apinin Lokasyon Kodunu Giriniz",
+          hintText: "IARNAVUT2"),
       onSaved: (String value) {
         location.locationApiName = value;
       },
@@ -111,11 +72,9 @@ class _LokasyonGuncelleState extends State {
       child: Text("Lokasyon Ekle"),
       onPressed: () {
         if (formKey.currentState.validate()) {
+          formKey.currentState.save();
           dbhelper.updateL(location);
-          print("islembasarili");
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
-              (Route<dynamic> route) => true);
+          Navigator.pop(context);
         }
       },
     );
