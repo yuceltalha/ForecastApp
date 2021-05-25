@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/userModel.dart';
+import 'package:untitled1/screens/LocationScreens/lokasyonDuzenle.dart';
 
 class Islemler extends StatefulWidget {
   var user = Users();
@@ -41,7 +42,7 @@ class _IslemlerState extends State {
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Islemler(users)),
+                MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
                     (Route<dynamic> route) => true);
           },
           title: Text("Lokasyon Düzenle"),
@@ -52,7 +53,7 @@ class _IslemlerState extends State {
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Islemler(users)),
+                MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
                     (Route<dynamic> route) => true);
           },
           title: Text("Kullanıcı Düzenle"),
@@ -65,7 +66,7 @@ class _IslemlerState extends State {
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Islemler(users)),
+                MaterialPageRoute(builder: (context) => LokasyonDuzenle()),
                     (Route<dynamic> route) => true);
           },
           title: Text("Hava Durumu"),
@@ -76,7 +77,7 @@ class _IslemlerState extends State {
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Islemler(users)),
+                MaterialPageRoute(builder: (context) =>LokasyonDuzenle()),
                     (Route<dynamic> route) => true);
           },
           title: Text("Raporlar"),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:untitled1/models/locationsModel.dart';
 import 'package:untitled1/models/userModel.dart';
 
 class DatabaseHelper {
@@ -74,24 +75,59 @@ class DatabaseHelper {
     return u;
   }
 
-  Future<int> insertM(Users u) async {
+  Future<int> insertU(Users u) async {
     Database db = await _getDatabase();
     var result = await db.insert("users", u.toJson());
       return result;
 
   }
 
-  Future<int> deleteM(int id) async {
+  Future<int> deleteU(int id) async {
     Database db = await _getDatabase();
     var result =
     await db.delete("users", where: 'ID = ?', whereArgs: [id]);
     return result;
   }
 
-  Future<int> updateM(Users u) async {
+  Future<int> updateU(Users u) async {
     Database db = await _getDatabase();
     var result = await db.update("users", u.toJson(),
         where: 'ID = ?', whereArgs: [u.id]);
+    return result;
+  }
+  //----------------------------------------------------------------------------
+  Future<List<Map<String, dynamic>>> getLocations() async {
+    Database db = await _getDatabase();
+    var result2 = await db.query("locations");
+    return result2;
+  }
+  Future<List<Locations>> getLocationsList() async {
+    var dbLocations = await getUsers();
+    var L = List<Locations>();
+    for (Map map in dbLocations) {
+      L.add(Locations.fromJson(map));
+    }
+    return L;
+  }
+
+  Future<int> insertLocation(Locations L) async {
+    Database db = await _getDatabase();
+    var result = await db.insert("locations", L.toJson());
+    return result;
+
+  }
+
+  Future<int> deleteL(int id) async {
+    Database db = await _getDatabase();
+    var result =
+    await db.delete("locations", where: 'ID = ?', whereArgs: [id]);
+    return result;
+  }
+
+  Future<int> updateL(Locations L) async {
+    Database db = await _getDatabase();
+    var result = await db.update("locations", L.toJson(),
+        where: 'ID = ?', whereArgs: [L.id]);
     return result;
   }
 
