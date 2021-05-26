@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.untitled1">
-   <application
-        android:label="untitled1"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:label="Wheather Forecast"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
