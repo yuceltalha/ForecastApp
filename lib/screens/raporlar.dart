@@ -29,7 +29,7 @@ class _RaporlarState extends State {
   DatabaseHelper dbhelper = DatabaseHelper();
   var location = Locations();
   var user = Users();
-  String external;
+  String external = "";
   _RaporlarState(location, user) {
     this.location = location;
     this.user = user;
@@ -43,6 +43,7 @@ class _RaporlarState extends State {
         location.locationName + "  " + location.locationApiName;
     userLog.sorguSonucu =
         "SICAKLIK : " + temp + "\n  RÜZGAR " + wind + "\n ÜLKE KODU " + country;
+    dbhelper.insertLog(userLog);
   }
 
   final String base =
@@ -51,15 +52,13 @@ class _RaporlarState extends State {
   Future<Observations> ApiCall() async {
     responseTime = date.second*100 + date.millisecond;
     final response = await http
-        .get(Uri.parse("https://api.weather.com/v2/pws/observations/current?format=json&units=e&apiKey=1461aaaed21e438da1aaaed21e738d06&stationId=${location.locationApiName}"));
+        .get(Uri.parse("$base&stationId=${location.locationApiName}"));
 
     if (response.statusCode == 200) {
       print(location.locationApiName);
       print(responseTime);
-      external = await FlutterIp.externalIP;
       return Observations.fromJson(json.decode(response.body));
     } else {
-      external = await FlutterIp.externalIP;
       throw Exception("hata!");
     }
   }
@@ -68,6 +67,7 @@ class _RaporlarState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: Text("Sonuç Sayfası"),
       ),
       body: reportBuilder(),
@@ -88,19 +88,25 @@ class _RaporlarState extends State {
             userLog.sorgulamaDurumu = "Başarılı";
             responseTime =
                 (date.second * 100 + date.millisecond) - responseTime;
-            userLog.reponseTime = responseTime;
+            userLog.responseTime = responseTime;
             userLog.kullaniciIp = external;
+            userLogging(
+                snapshot.data.observations[0].imperial["temp"]
+                    .toString(),
+                snapshot.data.observations[0].imperial["windSpeed"]
+                    .toString(),
+                snapshot.data.observations[0].country);
             return Column(
               children: [
                 Expanded(
                   child: ListView(
                     children: [
                       Text("ÜLKE KODU : " +
-                          snapshot.data.observations[0].country),
+                          snapshot.data.observations[0].country.toString()),
                       Text("BÖLGE : " +
-                          snapshot.data.observations[0].neighborhood),
+                          snapshot.data.observations[0].neighborhood.toString()),
                       Text("BÖLGE APİ KODU : " +
-                          snapshot.data.observations[0].stationId),
+                          snapshot.data.observations[0].stationId.toString()),
                       Text("SORGULAMA ZAMANI : " +
                           snapshot.data.observations[0].obsTimeLocal
                               .toString()),
@@ -110,19 +116,12 @@ class _RaporlarState extends State {
                       Text("RÜZGAR HIZI : " +
                           snapshot.data.observations[0].imperial["windSpeed"]
                               .toString()),
-                      userLogging(
-                          snapshot.data.observations[0].imperial["temp"]
-                              .toString(),
-                          snapshot.data.observations[0].imperial["windSpeed"]
-                              .toString(),
-                          snapshot.data.observations[0].country)
                     ],
                   ),
                 ),
               ],
             );
           } else if (!snapshot.hasData) {
-            userLog.sorgulamaDurumu = "Başarısız";
             return Center(
               child: CircularProgressIndicator(),
             );

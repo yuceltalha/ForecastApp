@@ -31,6 +31,7 @@ class _IslemlerState extends State {
         title: Text("İşlem Seçiniz"),
       ),
       body: Container(
+        padding: EdgeInsets.all(10),
         child: Column(
           children: [
             menuItems(),
@@ -44,6 +45,10 @@ class _IslemlerState extends State {
     var adminCards = [
       Card(
         color: Colors.deepPurple.shade300,
+        elevation: 4,
+        margin: EdgeInsets.all(10),
+        borderOnForeground: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
@@ -56,6 +61,10 @@ class _IslemlerState extends State {
 
       Card(
         color: Colors.redAccent.shade200,
+        elevation: 4,
+        margin: EdgeInsets.all(10),
+        borderOnForeground: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
@@ -70,6 +79,10 @@ class _IslemlerState extends State {
     var defaultCards = [
       Card(
         color: Colors.redAccent.shade200,
+        elevation: 4,
+        margin: EdgeInsets.all(10),
+        borderOnForeground: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
@@ -81,6 +94,10 @@ class _IslemlerState extends State {
       ),
       Card(
         color: Colors.deepPurple.shade300,
+        elevation: 4,
+        margin: EdgeInsets.all(10),
+        borderOnForeground: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ListTile(
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(

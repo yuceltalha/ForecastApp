@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled1/models/locationsModel.dart';
 import 'package:untitled1/models/userLogModel.dart';
-import 'package:untitled1/screens/raporlar.dart';
 import 'package:untitled1/utis/dbhelper.dart';
 
 class ULogScreen extends StatefulWidget {
@@ -13,8 +11,6 @@ class ULogScreen extends StatefulWidget {
 
 class _ULogScreenState extends State {
   DatabaseHelper dbhelper = DatabaseHelper();
-
-  var user;
 
   @override
   Widget build(BuildContext context) {
@@ -55,22 +51,22 @@ class _ULogScreenState extends State {
                                   snapshot.data[position].userId.toString() +
                                   "Kullanıcı Ip " +
                                   "\n" +
-                                  snapshot.data[position].kullaniciIp +
+                                  snapshot.data[position].kullaniciIp.toString() +
                                   "Sorgulama Durumu " +
                                   "\n" +
-                                  snapshot.data[position].sorgulamaDurumu +
+                                  snapshot.data[position].sorgulamaDurumu.toString() +
                                   "Sorgu Lokasyonu " +
                                   "\n" +
-                                  snapshot.data[position].sorguLokasyon +
+                                  snapshot.data[position].sorguLokasyon.toString() +
                                   "Sorgulama Zamanı " +
                                   "\n" +
-                                  snapshot.data[position].sorguZaman +
+                                  snapshot.data[position].sorguZaman.toString() +
                                   "Cevap Süresi " +
                                   "\n" +
-                                  snapshot.data[position].reponseTime.toString() +
+                                  snapshot.data[position].responseTime.toString() +
                                   "Sorgulama Sonucu " +
                                   "\n" +
-                                  snapshot.data[position].sorguSonucu),
+                                  snapshot.data[position].sorguSonucu.toString()),
                             ),
                           ),
                         );

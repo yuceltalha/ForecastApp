@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/userModel.dart';
 import 'package:untitled1/utis/dbhelper.dart';
@@ -65,6 +66,7 @@ class _LoginScreenState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey.shade400,
         centerTitle: true,
         title: Text("Giriş Sayfası"),
       ),
@@ -85,42 +87,52 @@ class _LoginScreenState extends State {
   }
 
   Widget buildUserNameFeild() {
-    return TextFormField(
-      initialValue: user.userName,
-      decoration:
-          InputDecoration(labelText: "Kullanıcı Adı", hintText: "admin"),
-      validator: validateUserName,
-      onSaved: (String value) {
-        user.userName = value;
-      },
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextFormField(
+        initialValue: user.userName,
+        decoration:
+            InputDecoration(labelText: "Kullanıcı Adı", hintText: "admin"),
+        validator: validateUserName,
+        onSaved: (String value) {
+          user.userName = value;
+        },
+      ),
     );
   }
 
   Widget buildPasswordFeild() {
-    return TextFormField(
-      initialValue: user.userPassword,
-      decoration:
-          InputDecoration(labelText: "Kullanıcı Şifresi", hintText: "root"),
-      validator: validatePassword,
-      onSaved: (String value) {
-        user.userPassword = value;
-      },
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: TextFormField(
+        initialValue: user.userPassword,
+        decoration:
+            InputDecoration(labelText: "Kullanıcı Şifresi", hintText: "root"),
+        validator: validatePassword,
+        onSaved: (String value) {
+          user.userPassword = value;
+        },
+      ),
     );
   }
 
   Widget buildSubmitButton() {
-    return RaisedButton(
-      child: Text("Giriş Yap"),
-      onPressed: () {
-        if (formKey.currentState.validate()) {
-          formKey.currentState.save();
-          validateAdminStatus();
-          print("islembasarili");
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => Islemler(user)),
-              (Route<dynamic> route) => false);
-        }
-      },
+    return Padding(
+      padding: const EdgeInsets.only(top:30),
+      child: RaisedButton(
+        padding: EdgeInsets.all(10),
+        child: Text("Giriş Yap",style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+        onPressed: () {
+          if (formKey.currentState.validate()) {
+            formKey.currentState.save();
+            validateAdminStatus();
+            print("islembasarili");
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Islemler(user)),
+                (Route<dynamic> route) => false);
+          }
+        },
+      ),
     );
   }
 }

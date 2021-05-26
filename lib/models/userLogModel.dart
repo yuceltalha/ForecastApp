@@ -16,7 +16,7 @@ class UserLog {
     this.sorguLokasyon,
     this.kullaniciIp,
     this.sorguSonucu,
-    this.reponseTime,
+    this.responseTime,
     this.sorgulamaDurumu,
   });
 
@@ -26,7 +26,7 @@ class UserLog {
   String sorguLokasyon;
   String kullaniciIp;
   String sorguSonucu;
-  int reponseTime;
+  int responseTime;
   String sorgulamaDurumu;
 
   factory UserLog.fromJson(Map<String, dynamic> json) => UserLog(
@@ -36,7 +36,7 @@ class UserLog {
     sorguLokasyon: json["sorguLokasyon"],
     kullaniciIp: json["kullaniciIP"],
     sorguSonucu: json["sorguSonucu"],
-    reponseTime: json["reponseTime"],
+    responseTime: json["responseTime"],
     sorgulamaDurumu: json["sorgulamaDurumu"],
   );
 
@@ -47,7 +47,7 @@ class UserLog {
     "sorguLokasyon": sorguLokasyon,
     "kullaniciIP": kullaniciIp,
     "sorguSonucu": sorguSonucu,
-    "reponseTime": reponseTime,
+    "responseTime": responseTime,
     "sorgulamaDurumu": sorgulamaDurumu,
   };
 }
