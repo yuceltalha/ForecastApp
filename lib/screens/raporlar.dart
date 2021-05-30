@@ -49,9 +49,8 @@ class _RaporlarState extends State {
 
   final String base =
       "https://api.weather.com/v2/pws/observations/current?format=json&units=e&apiKey=1461aaaed21e438da1aaaed21e738d06";
-
+//external= await FlutterIp.externalIP.then((e) => userLog.kullaniciIp = e);
   Future<Observations> ApiCall() async {
-    external= await FlutterIp.externalIP.then((e) => userLog.kullaniciIp = e);
 
     responseTime = date.second*100 + date.millisecond;
     final response = await http
