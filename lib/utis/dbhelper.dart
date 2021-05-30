@@ -134,7 +134,7 @@ class DatabaseHelper {
   //----------------------------------------------------------------------------
   Future<List<Map<String, dynamic>>> getLogs() async {
     Database db = await _getDatabase();
-    var result2 = await db.query("userLog");
+    var result2 = await db.query("userLog ORDER BY ID DESC");
     return result2;
   }
   Future<List<UserLog>> getLogist() async {

@@ -22,6 +22,14 @@ class _ULogScreenState extends State {
     );
   }
 
+  setColor(int id) {
+    if (id % 2 == 0) {
+      return Colors.blue.shade400;
+    } else {
+      return Colors.deepOrange.shade200;
+    }
+  }
+
   logBuilder() {
     return Column(
       children: [
@@ -38,36 +46,61 @@ class _ULogScreenState extends State {
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int position) {
                         return Container(
+                          color: setColor(snapshot.data.length),
                           margin: EdgeInsets.all(7),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            color: Colors.deepPurple.shade200,
-                            elevation: 2.4,
-                            child: ListTile(
-                              title: Text("Kullanıcı id " +
-                                  "\n" +
-                                  snapshot.data[position].userId.toString() +
-                                  "Kullanıcı Ip " +
-                                  "\n" +
-                                  snapshot.data[position].kullaniciIp.toString() +
-                                  "Sorgulama Durumu " +
-                                  "\n" +
-                                  snapshot.data[position].sorgulamaDurumu.toString() +
-                                  "Sorgu Lokasyonu " +
-                                  "\n" +
-                                  snapshot.data[position].sorguLokasyon.toString() +
-                                  "Sorgulama Zamanı " +
-                                  "\n" +
-                                  snapshot.data[position].sorguZaman.toString() +
-                                  "Cevap Süresi " +
-                                  "\n" +
-                                  snapshot.data[position].responseTime.toString() +
-                                  "Sorgulama Sonucu " +
-                                  "\n" +
-                                  snapshot.data[position].sorguSonucu.toString()),
-                            ),
+                          child: Column(
+                            children: [
+                              Card(
+                                child: ListTile(
+                                  title: Text("Kullanıcı id : " +
+                                      snapshot.data[position].userId
+                                          .toString()),
+                                ),
+                              ),
+                              Card(
+                                child: ListTile(
+                                  title: Text("Kullanıcı Ip : " +
+                                      snapshot.data[position].kullaniciIp
+                                          .toString()),
+                                ),
+                              ),
+                              Card(
+                                child: ListTile(
+                                  title: Text("Sorgulama Durumu : " +
+                                      snapshot.data[position].sorgulamaDurumu
+                                          .toString()),
+                                ),
+                              ),
+                              Card(
+                                child: ListTile(
+                                  title: Text("Sorgu Lokasyonu :" +
+                                      snapshot.data[position].sorguLokasyon
+                                          .toString()),
+                                ),
+                              ),
+                              Card(
+                                child: ListTile(
+                                  title: Text("Sorgulama Zamanı :" +
+                                      snapshot.data[position].sorguZaman
+                                          .toString()),
+                                ),
+                              ),
+                              Card(
+                                child: ListTile(
+                                  title: Text("Cevap Süresi : " +
+                                      snapshot.data[position].responseTime
+                                          .toString()),
+                                ),
+                              ),
+                              Card(
+                                  child: ListTile(
+                                title: Text(
+                                  "Sorgulama Sonucu : " +
+                                      snapshot.data[position].sorguSonucu
+                                          .toString(),
+                                ),
+                              )),
+                            ],
                           ),
                         );
                       }),

@@ -35,14 +35,15 @@ class _RaporlarState extends State {
     this.user = user;
   }
 
-  userLogging(String temp, String wind, String country) {
+  userLogging(String temp, String wind, String country,int response ) {
     userLog.id = null;
     userLog.userId = user.id;
     userLog.sorguZaman = date.toString();
+    userLog.responseTime = response;
     userLog.sorguLokasyon =
         location.locationName + "  " + location.locationApiName;
     userLog.sorguSonucu =
-        "SICAKLIK : " + temp + "\n  RÜZGAR " + wind + "\n ÜLKE KODU " + country;
+    "\n" + "SICAKLIK : " + temp + " Fahrenayt" + "\n  RÜZGAR " + wind +" Km/saat"+ "\n ÜLKE KODU " + country;
     dbhelper.insertLog(userLog);
   }
 
@@ -50,13 +51,13 @@ class _RaporlarState extends State {
       "https://api.weather.com/v2/pws/observations/current?format=json&units=e&apiKey=1461aaaed21e438da1aaaed21e738d06";
 
   Future<Observations> ApiCall() async {
+    external= await FlutterIp.externalIP.then((e) => userLog.kullaniciIp = e);
+
     responseTime = date.second*100 + date.millisecond;
     final response = await http
         .get(Uri.parse("$base&stationId=${location.locationApiName}"));
 
     if (response.statusCode == 200) {
-      print(location.locationApiName);
-      print(responseTime);
       return Observations.fromJson(json.decode(response.body));
     } else {
       throw Exception("hata!");
@@ -80,7 +81,7 @@ class _RaporlarState extends State {
         builder: (context, AsyncSnapshot<Observations> snapshot) {
           if (snapshot.hasError) {
             userLog.sorgulamaDurumu = "Başarısız";
-            userLogging("temp", "wind", "country");
+            userLogging("temp", "wind", "country",0);
             return Center(
               child: Text("hataa!"),
             );
@@ -88,14 +89,12 @@ class _RaporlarState extends State {
             userLog.sorgulamaDurumu = "Başarılı";
             responseTime =
                 (date.second * 100 + date.millisecond) - responseTime;
-            userLog.responseTime = responseTime;
-            userLog.kullaniciIp = external;
             userLogging(
                 snapshot.data.observations[0].imperial["temp"]
                     .toString(),
                 snapshot.data.observations[0].imperial["windSpeed"]
                     .toString(),
-                snapshot.data.observations[0].country);
+                snapshot.data.observations[0].country,responseTime);
             return Column(
               children: [
                 Expanded(
@@ -112,10 +111,10 @@ class _RaporlarState extends State {
                               .toString()),
                       Text("SICAKLIK : " +
                           snapshot.data.observations[0].imperial["temp"]
-                              .toString()),
+                              .toString() + " Fahrenayt"),
                       Text("RÜZGAR HIZI : " +
                           snapshot.data.observations[0].imperial["windSpeed"]
-                              .toString()),
+                              .toString() + "Km/saat"),
                     ],
                   ),
                 ),
